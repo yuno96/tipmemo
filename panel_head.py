@@ -7,7 +7,7 @@ from tkinter import *
 
 class PanelHead(Frame):
 	def __init__(self, mainobj, root):
-		print('init :' + __name__)
+		self.logging = mainobj.logging
 		Frame.__init__(self, root)
 		self.listb = Listbox(root)
 		self.listb.pack(side=TOP, fill=BOTH, expand=True)
@@ -20,6 +20,8 @@ class PanelHead(Frame):
 		self.listd = Button(root, text='>')
 		self.listd.pack(side=LEFT, fill=BOTH)
 		tmpframe.pack(side=BOTTOM)
+
+		self.logging.debug('init')
 
 	def hello(self):
 		print("hello!")

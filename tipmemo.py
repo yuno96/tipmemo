@@ -4,18 +4,22 @@
 import os
 import sys
 import errno
+import logging
 from tkinter import *
 from panel_menu import *
 from panel_search import *
 from panel_head import *
 from panel_body import *
 
-
 class Tipmemo:
 	def __init__(self, root):
 		self.root = root
+		self.logging = logging
 		self.dbpath = './data'
 		
+		self.logging.basicConfig(level=logging.DEBUG, 
+			format='%(levelname)s:%(filename)s:%(funcName)s:%(lineno)d:%(message)s')
+
 		self.check_dbpath(self.dbpath)
 
 		psearch = PanelMenu(self, root)
@@ -30,7 +34,10 @@ class Tipmemo:
 
 		btmframe2 = Frame(root)
 		pbody = PanelBody(self, btmframe2)
-		btmframe2.pack(side=LEFT, fill=Y)
+		btmframe2.pack(side=LEFT, fill=BOTH, expand=True)
+
+		self.logging.debug('init')
+
 
 	def check_dbpath(self, directory):
 		if not os.path.exists(directory):
@@ -40,10 +47,10 @@ class Tipmemo:
 				if error.errno != errno.EEXIST:
 					raise
 	def btn_search(self):
-		print('search')
+		self.logging.debug('searh')
 
 	def run(self):
-		print('tipmemo run')
+		self.logging.debug('run')
 
 if __name__ == '__main__':
 	root = Tk()

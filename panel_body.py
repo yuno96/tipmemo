@@ -7,7 +7,7 @@ from tkinter import *
 
 class PanelBody(Frame):
 	def __init__(self, mainobj, root):
-		print('init :' + __name__)
+		self.logging = mainobj.logging
 		Frame.__init__(self, root)
 		self.mainobj = mainobj
 		self.title = Entry(root)
@@ -24,11 +24,13 @@ class PanelBody(Frame):
 		self.btn_new.pack(side=RIGHT, fill=BOTH)
 		tmpframe.pack(side=BOTTOM)
 
+		self.logging.debug('init')
+
 	def hello(self):
-		print("hello!")
+		self.logging.debug('hello')
 
 	def save_body(self):
-		print("savebody!")
+		self.logging.debug('savebody')
 		with open('./data/aa.md', 'w') as f:
 			f.write(self.contents.get(1.0, END))
 
