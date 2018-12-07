@@ -4,14 +4,21 @@
 import os
 import sys
 from tkinter import *
+from tkinter.messagebox import showinfo, showerror, askyesno
 
 class PanelBody(Frame):
 	def __init__(self, mainobj, root):
 		self.logging = mainobj.logging
 		Frame.__init__(self, root)
 		self.mainobj = mainobj
-		self.title = Entry(root)
-		self.title.pack(side=TOP, fill=BOTH)
+
+		tmpframe = Frame(root)
+		tmplabel = Label(tmpframe, text='Title:')
+		tmplabel.pack(side=LEFT, fill=X)
+		self.title = Entry(tmpframe)
+		self.title.pack(side=LEFT, fill=BOTH, expand=True)
+		tmpframe.pack(side=TOP, fill=BOTH)
+
 		self.contents = Text(root)
 		self.contents.pack(side=TOP, fill=BOTH, expand=True)
 
@@ -29,8 +36,19 @@ class PanelBody(Frame):
 	def hello(self):
 		self.logging.debug('hello')
 
+
 	def save_body(self):
 		self.logging.debug('savebody')
-		with open('./data/aa.md', 'w') as f:
+		title = self.title.get().strip()
+		if not title:
+			showinfo('info', 'Please fill the title')
+			return
+
+		fname = os.path.join(self.mainobj.dbpath, title+'.md')
+		with open(fname, 'w') as f:
 			f.write(self.contents.get(1.0, END))
+
+		self.mainobj.sig_phead_append(fname)
+
+
 

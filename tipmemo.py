@@ -22,18 +22,18 @@ class Tipmemo:
 
 		self.check_dbpath(self.dbpath)
 
-		psearch = PanelMenu(self, root)
+		#psearch = PanelMenu(self, root)
 
 		topframe = Frame(root)
-		psearch = PanelSearch(self, topframe)
+		self.psearch = PanelSearch(self, topframe)
 		topframe.pack(side=TOP, fill=X)
 
 		btmframe = Frame(root)
-		phead = PanelHead(self, btmframe)
+		self.phead = PanelHead(self, btmframe)
 		btmframe.pack(side=LEFT, fill=Y)
 
 		btmframe2 = Frame(root)
-		pbody = PanelBody(self, btmframe2)
+		self.pbody = PanelBody(self, btmframe2)
 		btmframe2.pack(side=LEFT, fill=BOTH, expand=True)
 
 		self.logging.debug('init')
@@ -46,6 +46,11 @@ class Tipmemo:
 			except OSError as error:
 				if error.errno != errno.EEXIST:
 					raise
+
+	def sig_phead_append(self, fname):
+		self.logging.debug('-->' + fname)
+		self.phead.append_to_head(fname)
+
 	def btn_search(self):
 		self.logging.debug('searh')
 
