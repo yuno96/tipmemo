@@ -10,32 +10,44 @@ from panel_menu import *
 from panel_search import *
 from panel_head import *
 from panel_body import *
+from panel_status import *
 
 class Tipmemo:
 	def __init__(self, root):
 		self.root = root
 		self.logging = logging
-		self.dbpath = './data'
+		self.DBPATH = './data'
+		self.DBNAME = 'cache'
+		self.HEADLIST_MAX = 64
+		self.root.title('Tipmemo')
 		
 		self.logging.basicConfig(level=logging.DEBUG, 
 			format='%(levelname)s:%(filename)s:%(funcName)s:%(lineno)d:%(message)s')
 
-		self.check_dbpath(self.dbpath)
+		self.check_dbpath(self.DBPATH)
 
-		#psearch = PanelMenu(self, root)
+		self.pmenu = PanelMenu(self, root)
+		self.pmenu.pack(fill=X)
 
-		topframe = Frame(root)
-		self.psearch = PanelSearch(self, topframe)
-		topframe.pack(side=TOP, fill=X)
+		self.psearch = PanelSearch(self, root)
+		self.psearch.pack(side=TOP, fill=X)
 
-		btmframe = Frame(root)
-		self.phead = PanelHead(self, btmframe)
-		btmframe.pack(side=LEFT, fill=Y)
+		centerframe = Frame(root)
+		self.phead = PanelHead(self, centerframe)
+		self.phead.pack(side=LEFT, fill=Y)
+		self.pbody = PanelBody(self, centerframe)
+		self.pbody.pack(side=LEFT, fill=BOTH, expand=True)
+		centerframe.pack(fill=BOTH, expand=True)
 
-		btmframe2 = Frame(root)
-		self.pbody = PanelBody(self, btmframe2)
-		btmframe2.pack(side=LEFT, fill=BOTH, expand=True)
+		self.pstatus = PanelStatus(self, root)
+		self.pstatus.pack(fill=BOTH)
 
+		'''
+		entry0 = self.phead.redraw_head()
+		if entry0:
+			self.pbody.redraw_body(entry0)
+		'''
+		
 		self.logging.debug('init')
 
 
@@ -47,9 +59,9 @@ class Tipmemo:
 				if error.errno != errno.EEXIST:
 					raise
 
-	def sig_phead_append(self, fname):
-		self.logging.debug('-->' + fname)
-		self.phead.append_to_head(fname)
+	def sig_db_append(self, fname, title):
+		self.logging.debug('-->%s %s' % (fname, title))
+		self.phead.db_append(fname, title)
 
 	def btn_search(self):
 		self.logging.debug('searh')

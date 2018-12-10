@@ -15,6 +15,8 @@ Easy to record and search a tons of tips working on the cross-platform
 | panel_head | panel_body   |
 |            |              |
 +------------+--------------+
+| panel_status              |
++---------------------------+
 ```
 
 ## Data Management
@@ -22,15 +24,22 @@ Easy to record and search a tons of tips working on the cross-platform
 ### directory structure
 
 ```
-data                     <-- root dbpath
-+- 201811                <-- monthly creation
-  +- 223123-filename.md  <-- Saved file 
+data            <-- root dbpath
++- cache        <-- database(dbm)
++- 112312414-0  <-- Saved file which means time in seconds
++- 112312413-0
++- 112312412-0
 ```
+### Database format
+```
+filename,title
+```
+
 ### Fileformat
 
-FileCreationTimeInSeconds-FileName.extension
 ```
-example) 223123-filename.md 
+title\n
+contents
 ```
 
 ## References
