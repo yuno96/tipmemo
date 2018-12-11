@@ -42,14 +42,14 @@ class Tipmemo:
 		self.pstatus = PanelStatus(self, root)
 		self.pstatus.pack(fill=BOTH)
 
-		'''
-		entry0 = self.phead.redraw_head()
-		if entry0:
-			self.pbody.redraw_body(entry0)
-		'''
+		entry = self.phead.redraw_head()
+		if entry:
+			self.pbody.redraw_body(entry)
 		
 		self.logging.debug('init')
 
+	def get_db_path(self):
+		return os.path.join(self.DBPATH, self.DBNAME)
 
 	def check_dbpath(self, directory):
 		if not os.path.exists(directory):
@@ -58,6 +58,9 @@ class Tipmemo:
 			except OSError as error:
 				if error.errno != errno.EEXIST:
 					raise
+
+	def sig_redraw_body(self, entry):
+		self.pbody.redraw_body(entry)
 
 	def sig_db_append(self, fname, title):
 		self.logging.debug('-->%s %s' % (fname, title))
@@ -70,6 +73,9 @@ class Tipmemo:
 		self.logging.debug('run')
 
 if __name__ == '__main__':
+
 	root = Tk()
+	root.tk.call('encoding', 'system', 'utf-8')
+	root.option_add( "*font", "lucida 9" )
 	tipmemo = Tipmemo(root)
 	root.mainloop()

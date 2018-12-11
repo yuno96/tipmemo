@@ -12,11 +12,14 @@ class PanelHead(Frame):
 	def __init__(self, mainobj, root):
 		self.logging = mainobj.logging
 		self.logging.debug('called')
+		self.mainobj = mainobj
 
 		Frame.__init__(self, root)
 
 		tmpframe = Frame(self)
 		self.listb = Listbox(tmpframe)
+		self.listb.bind('<Double-1>', self.double_click)
+
 		self.listb.pack(side=TOP, fill=BOTH, expand=True)
 		self.listb.config(width=40)	# set listbox size
 
@@ -30,25 +33,33 @@ class PanelHead(Frame):
 		self.btn_plast.pack(side=LEFT, fill=BOTH)
 		tmpframe.pack(side=LEFT, fill=Y)
 
-	def load_db(self, num):
+	def load_db(self):
 		kl = {}
-		db = dbm.open(self.mainobj.DBNAME, 'r')
-		keylist = db.keys().sort(reverse=True)
-		for x in range(0, num):
-			k = keylist[x]
-			kl[k] = db[k]
+		dbpath = self.mainobj.get_db_path()
+		self.logging.debug(dbpath)
+		if not os.path.isfile(dbpath):
+			self.logging.info('No db file:'+dbpath)
+			return None
+		db = dbm.open(self.mainobj.get_db_path(), 'r')
+		for k in sorted(db.keys(), reverse=True):
+			kl[k.decode('utf-8')] = db[k].decode('utf-8')
+			print ('--> %s' % db[k])
 		db.close()
+		self.logging.debug(kl)
 		return kl
 
 	def redraw_head(self):
 		self.listb.delete(0, END)
-		headlist = load_db(self.mainobj.HEADLIST_MAX)
-		if headlist:
-			for idx, key in enumerate(headlist):
+		hdict = self.load_db()
+		firstkey = None
+		if hdict:
+			for idx, key in enumerate(hdict):
+				if not firstkey:
+					firstkey = key
 				t = key.split('-')[0] 
-				title = headlist[key] + '(%s)' % time.ctime(t)
+				title = hdict[key] + '(%s)'%time.ctime(int(t))
 				self.listb.insert(idx, title)
-			return headlist[0]
+			return (firstkey, hdict[firstkey])
 		else:
 			return None
 
@@ -56,9 +67,21 @@ class PanelHead(Frame):
 		self.logging.debug('-->' + fname)
 
 		name = os.path.basename(fname)
-		with dbm.open(self.mainobj.DBNAME, 'c') as db:
+		with dbm.open(self.mainobj.get_db_path(), 'c') as db:
 			db[name] = title
 
-		redraw_listb()
+		self.redraw_head()
+
+	def double_click(self, event):
+		self.logging.debug('double clicked')
+		print (self.listb.curselection()[0])
+		print (self.listb.get(self.listb.curselection()[0]))
+		val = self.listb.get(self.listb.curselection()[0])
+		tmstruct = time.strptime(val[-25:-1])
+		t = time.mktime(tmstruct)
+		self.mainobj.sig_redraw_body(('%d-0'%t, 'none'))
+		
+
+
 
 
