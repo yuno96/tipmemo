@@ -38,7 +38,8 @@ class PanelBody(Frame):
 
 	def make_new_filename(self, t):
 		for cnt in range(0, 64):
-			fname = self.mainobj.DBPATH + '/%d-%d' % (t, cnt);
+			fname = os.path.join(self.mainobj.DBPATH, 
+					'%d-%d'%(t, cnt))
 			if not os.path.isfile(fname):
 				return fname
 		return None

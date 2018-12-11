@@ -16,7 +16,7 @@ class Tipmemo:
 	def __init__(self, root):
 		self.root = root
 		self.logging = logging
-		self.DBPATH = './data'
+		self.DBPATH = os.path.join(os.getcwd(), 'data')
 		self.DBNAME = 'cache'
 		self.HEADLIST_MAX = 64
 		self.root.title('Tipmemo')
@@ -46,7 +46,7 @@ class Tipmemo:
 		if entry:
 			self.pbody.redraw_body(entry)
 		
-		self.logging.debug('init')
+		self.logging.debug('pwd='+self.DBPATH)
 
 	def get_db_path(self):
 		return os.path.join(self.DBPATH, self.DBNAME)
