@@ -47,3 +47,5 @@ contents
   * https://www.geeksforgeeks.org/make-notepad-using-tkinter/
 - Python 3 Project : Gui Text Editor using Tkinter, File Handling
   * https://www.hackanons.com/2018/08/python-3-project-gui-text-editor-using.html
+- Icons
+  * https://icons8.com/
