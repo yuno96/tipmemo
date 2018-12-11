@@ -37,14 +37,14 @@ class PanelHead(Frame):
 		kl = {}
 		dbpath = self.mainobj.get_db_path()
 		self.logging.debug(dbpath)
-		if not os.path.isfile(dbpath):
-			self.logging.info('No db file:'+dbpath)
+		try:
+			db = dbm.open(self.mainobj.get_db_path(), 'r')
+			for k in sorted(db.keys(), reverse=True):
+				kl[k.decode('utf-8')] = db[k].decode('utf-8')
+				print ('--> %s' % db[k])
+			db.close()
+		except:
 			return None
-		db = dbm.open(self.mainobj.get_db_path(), 'r')
-		for k in sorted(db.keys(), reverse=True):
-			kl[k.decode('utf-8')] = db[k].decode('utf-8')
-			print ('--> %s' % db[k])
-		db.close()
 		self.logging.debug(kl)
 		return kl
 
