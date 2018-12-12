@@ -25,7 +25,8 @@ class PanelBody(Frame):
 		scrollbar = Scrollbar(contframe)
 		scrollbar.pack(side=RIGHT, fill=Y)
 		self.contents = Text(contframe, yscrollcommand=scrollbar.set)
-		self.contents.bind('<KeyRelease>', self.begin_edit_contents)
+		#self.contents.bind('<KeyRelease>', self.begin_edit_contents)
+		self.contents.bind('<<Modified>>', self.begin_edit_contents)
 		self.contents.pack(fill=BOTH, expand=True)
 		scrollbar.config(command=self.contents.yview)
 		contframe.pack(side=TOP, fill=BOTH, expand=True)
@@ -64,12 +65,15 @@ class PanelBody(Frame):
 		return title_state
 
 	def begin_edit_contents(self, val=None):
-		self.logging.debug('changed')
-		self.btn_save.config(state='normal')
+		self.logging.debug('-->%s'% self.contents.edit_modified())
+		if self.contents.edit_modified():
+			self.logging.debug('changed')
+			self.btn_save.config(state='normal')
 
 	def end_edit_contents(self):
 		self.logging.debug("changed")
 		self.btn_save.config(state='disabled')
+		self.contents.edit_modified(False)
 
 	def clear_all_widget(self):
 		pre_title_state = self.set_title_state('normal')
@@ -127,6 +131,7 @@ class PanelBody(Frame):
 			self.logging.error('Error open: '+self.fname)
 			self.fname = None
 
+		self.end_edit_contents()
 		self.set_title_state('readonly')
 
 

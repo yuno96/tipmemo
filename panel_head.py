@@ -7,6 +7,7 @@ from tkinter import *
 import time
 import datetime
 import dbm
+from tkinter import font
 
 class PanelHead(Frame):
 	def __init__(self, mainobj, root):
@@ -21,10 +22,10 @@ class PanelHead(Frame):
 		listbframe = Frame(tmpframe)
 		scrollbar = Scrollbar(listbframe)
 		scrollbar.pack(side=RIGHT, fill=Y)
-		self.listb = Listbox(listbframe, yscrollcommand=scrollbar.set)
+		self.listb = Listbox(listbframe, width=48,
+				yscrollcommand=scrollbar.set)
 		self.listb.bind('<Double-1>', self.double_click)
 		self.listb.pack(fill=BOTH, expand=True)
-		self.listb.config(width=48)	# set listbox size
 		scrollbar.config(command=self.listb.yview)
 		listbframe.pack(side=TOP, fill=BOTH, expand=True)
 
@@ -38,6 +39,17 @@ class PanelHead(Frame):
 		self.btn_plast.pack(side=LEFT, fill=BOTH)
 
 		tmpframe.pack(side=LEFT, fill=Y)
+
+		# Get the listbox font
+		listFont = font.Font(font=self.listb.cget("font"))
+
+		# Define spacing between left and right strings in terms of single "space" length
+		s0 = listFont.measure(' ')
+		s1 = listFont.measure('a')
+		s2 = listFont.measure('A')
+		s3 = listFont.measure('가')
+		s4 = listFont.measure('8')
+		self.logging.debug('listb width=%d %d %d %d %d %d'%(self.listb['width'], s0, s1, s2, s3, s4))
 
 	def load_db(self):
 		kl = {}

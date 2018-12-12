@@ -53,3 +53,5 @@ contents
   * refer to delete item from dbm
 - Syntax Highlight: How to use Tag in Text widget
   * https://www.tutorialspoint.com/python/tk_text.htm
+- Text Widget:
+  * http://infohost.nmt.edu/tcc/help/pubs/tkinter/web/text-methods.html
