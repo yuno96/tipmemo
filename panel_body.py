@@ -31,7 +31,7 @@ class PanelBody(Frame):
 		contframe.pack(side=TOP, fill=BOTH, expand=True)
 
 		self.btn_del = Button(self, text='Del',
-				command=self.test_command)
+				command=self.btn_del_command)
 		self.btn_del.pack(side=RIGHT, fill=BOTH)
 		self.btn_save = Button(self, text='Save', state='disabled',
 				command=self.save_body)
@@ -42,8 +42,21 @@ class PanelBody(Frame):
 
 		self.logging.debug('init')
 
-	def test_command(self):
-		self.logging.debug('-->test_command')
+	def btn_del_command(self):
+		self.logging.debug('-->btn_del_command')
+		fname = self.fname
+		if fname:
+			self.mainobj.sig_db_delete(fname)
+			os.remove(fname)
+			#self.fname = None
+
+
+	def btn_new_command(self):
+		self.set_title_state('normal')
+		self.end_edit_contents()
+		self.fname = None
+		self.clear_all_widget()
+
 
 	def set_title_state(self, curstate):
 		title_state = self.title['state']
@@ -63,12 +76,6 @@ class PanelBody(Frame):
 		self.title.delete('0', END)
 		self.contents.delete('1.0', END)
 		self.set_title_state(pre_title_state)
-
-	def btn_new_command(self):
-		self.set_title_state('normal')
-		self.end_edit_contents()
-		self.fname = None
-		self.clear_all_widget()
 
 	def make_new_filename(self, t):
 		for cnt in range(0, 64):

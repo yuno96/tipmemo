@@ -70,13 +70,22 @@ class PanelHead(Frame):
 			return None
 
 	def db_append(self, fname, title):
-		self.logging.debug('-->' + fname)
+		self.logging.debug('-->%s %s' % (fname, title))
 
 		name = os.path.basename(fname)
 		with dbm.open(self.mainobj.get_db_path(), 'c') as db:
 			db[name] = title
 
-		self.redraw_head()
+		#self.redraw_head()
+
+	def db_delete(self, fname):
+		self.logging.debug('-->' + fname)
+
+		name = os.path.basename(fname)
+		with dbm.open(self.mainobj.get_db_path(), 'c') as db:
+			del db[name]
+
+		#self.redraw_head()
 
 	def double_click(self, event):
 		self.logging.debug('double clicked')

@@ -49,3 +49,5 @@ contents
   * https://www.hackanons.com/2018/08/python-3-project-gui-text-editor-using.html
 - Icons
   * https://icons8.com/
+- Programming in Python 3: A Complete Introduction to the Python Language
+  * refer to delete item from dbm

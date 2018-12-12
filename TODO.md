@@ -6,18 +6,20 @@
     * New, Save, Delete
     * Refresh
     * Search
+  * Keep Focus on proper widget
 - panel_search
   * Develop search function
   * Add refresh panel_head button
+    * fix ordering problem
 - panel_head
-  * Expand panel_head size
+  * Expand panel_head size (0)
     * 32s(and ellipsis-...) and date string
-  * Remove buttons Instead add scrollbar
+  * Remove buttons Instead add scrollbar (O)
 - panel_body
-  * Develop button function
+  * Develop button function (O)
     * Enable/Disable function by something to update (O)
-    * Add Del function
-  * Add Text scrollbar
+    * Add Del function (O)
+  * Add Text scrollbar (O)
 
 - panel_status
   * show message in status bar

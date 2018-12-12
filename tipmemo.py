@@ -42,10 +42,7 @@ class Tipmemo:
 		self.pstatus = PanelStatus(self, root)
 		self.pstatus.pack(fill=BOTH)
 
-		entry = self.phead.redraw_head()
-		if entry:
-			self.pbody.redraw_body(entry)
-		
+		self.redraw_all()
 		self.logging.debug('pwd='+self.DBPATH)
 
 	def get_db_path(self):
@@ -58,6 +55,10 @@ class Tipmemo:
 			except OSError as error:
 				if error.errno != errno.EEXIST:
 					raise
+	def redraw_all(self):
+		entry = self.phead.redraw_head()
+		if entry:
+			self.pbody.redraw_body(entry)
 
 	def sig_redraw_body(self, entry):
 		self.pbody.redraw_body(entry)
@@ -65,6 +66,12 @@ class Tipmemo:
 	def sig_db_append(self, fname, title):
 		self.logging.debug('-->%s %s' % (fname, title))
 		self.phead.db_append(fname, title)
+		self.redraw_all()
+
+	def sig_db_delete(self, fname):
+		self.logging.debug('-->%s' % fname)
+		self.phead.db_delete(fname)
+		self.redraw_all()
 
 	def btn_search(self):
 		self.logging.debug('searh')
