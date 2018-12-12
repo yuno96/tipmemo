@@ -56,6 +56,7 @@ class PanelHead(Frame):
 
 	def redraw_head(self):
 		self.listb.delete(0, END)
+		self.listb.focus_set()
 		hdict = self.load_db()
 		firstkey = None
 		if hdict:

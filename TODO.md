@@ -6,7 +6,7 @@
     * New, Save, Delete
     * Refresh
     * Search
-  * Keep Focus on proper widget
+  * Keep Focus on proper widget (O)
 - panel_search
   * Develop search function
   * Add refresh panel_head button

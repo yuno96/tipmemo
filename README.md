@@ -51,3 +51,5 @@ contents
   * https://icons8.com/
 - Programming in Python 3: A Complete Introduction to the Python Language
   * refer to delete item from dbm
+- Syntax Highlight: How to use Tag in Text widget
+  * https://www.tutorialspoint.com/python/tk_text.htm
