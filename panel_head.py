@@ -45,7 +45,7 @@ class PanelHead(Frame):
 		self.logging.debug(dbpath)
 		try:
 			db = dbm.open(self.mainobj.get_db_path(), 'r')
-			for k in sorted(db.keys(), reverse=True):
+			for k in db.keys():
 				kl[k.decode('utf-8')] = db[k].decode('utf-8')
 				print ('--> %s' % db[k])
 			db.close()
@@ -60,7 +60,7 @@ class PanelHead(Frame):
 		hdict = self.load_db()
 		firstkey = None
 		if hdict:
-			for idx, key in enumerate(hdict):
+			for idx, key in enumerate(sorted(hdict, reverse=True)):
 				if not firstkey:
 					firstkey = key
 				t = key.split('-')[0] 
