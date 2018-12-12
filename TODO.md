@@ -15,7 +15,7 @@
   * Remove buttons Instead add scrollbar
 - panel_body
   * Develop button function
-    * Enable/Disable function by something to update
+    * Enable/Disable function by something to update (O)
     * Add Del function
   * Add Text scrollbar
 

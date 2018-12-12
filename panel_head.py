@@ -21,7 +21,7 @@ class PanelHead(Frame):
 		self.listb.bind('<Double-1>', self.double_click)
 
 		self.listb.pack(side=TOP, fill=BOTH, expand=True)
-		self.listb.config(width=40)	# set listbox size
+		self.listb.config(width=48)	# set listbox size
 
 		self.btn_pfirst = Button(tmpframe, text='<<')
 		self.btn_pfirst.pack(side=LEFT, fill=BOTH)
