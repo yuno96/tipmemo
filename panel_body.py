@@ -17,7 +17,7 @@ class PanelBody(Frame):
 		tmpframe = Frame(self)
 		tmplabel = Label(tmpframe, text='Title:')
 		tmplabel.pack(side=LEFT, fill=X)
-		self.title = Entry(tmpframe)#, state='readonly')
+		self.title = Entry(tmpframe, state='readonly')
 		self.title.pack(side=LEFT, fill=BOTH, expand=True)
 		tmpframe.pack(side=TOP, fill=BOTH)
 
@@ -40,6 +40,11 @@ class PanelBody(Frame):
 	def test_command(self):
 		self.logging.debug('-->test_command')
 
+	def set_title_state(self, curstate):
+		title_state = self.title['state']
+		self.title.config(state=curstate)
+		return title_state
+
 	def begin_edit_contents(self, val=None):
 		self.logging.debug('changed')
 		self.btn_save.config(state='normal')
@@ -49,13 +54,15 @@ class PanelBody(Frame):
 		self.btn_save.config(state='disabled')
 
 	def clear_all_widget(self):
+		pre_title_state = self.set_title_state('normal')
 		self.title.delete('0', END)
 		self.contents.delete('1.0', END)
+		self.set_title_state(pre_title_state)
 
 	def btn_new_command(self):
+		self.set_title_state('normal')
 		self.end_edit_contents()
 		self.fname = None
-		#self.title.config(state='normal')
 		self.clear_all_widget()
 
 	def make_new_filename(self, t):
@@ -88,7 +95,7 @@ class PanelBody(Frame):
 			f.write(self.contents.get(1.0, END))
 
 		self.end_edit_contents()
-		#self.title.config(state='readonly')
+		self.set_title_state('readonly')
 		if not self.fname:
 			self.mainobj.sig_db_append(fname, title)
 			self.fname = fname
@@ -99,13 +106,16 @@ class PanelBody(Frame):
 
 		self.fname = os.path.join(self.mainobj.DBPATH, entry[0])
 		try:
+			pre_title_state = self.set_title_state('normal')
 			with open(self.fname, 'r') as f:
 				self.title.insert(0, f.readline().strip())
 				self.contents.insert(INSERT, f.read())
-			#self.title.config(state='readonly')
+			self.set_title_state(pre_title_state)
 		except:
 			self.logging.error('Error open: '+self.fname)
 			self.fname = None
+
+		self.set_title_state('readonly')
 
 
 
