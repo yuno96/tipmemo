@@ -17,11 +17,16 @@ class PanelHead(Frame):
 		Frame.__init__(self, root)
 
 		tmpframe = Frame(self)
-		self.listb = Listbox(tmpframe)
-		self.listb.bind('<Double-1>', self.double_click)
 
-		self.listb.pack(side=TOP, fill=BOTH, expand=True)
+		listbframe = Frame(tmpframe)
+		scrollbar = Scrollbar(listbframe)
+		scrollbar.pack(side=RIGHT, fill=Y)
+		self.listb = Listbox(listbframe, yscrollcommand=scrollbar.set)
+		self.listb.bind('<Double-1>', self.double_click)
+		self.listb.pack(fill=BOTH, expand=True)
 		self.listb.config(width=48)	# set listbox size
+		scrollbar.config(command=self.listb.yview)
+		listbframe.pack(side=TOP, fill=BOTH, expand=True)
 
 		self.btn_pfirst = Button(tmpframe, text='<<')
 		self.btn_pfirst.pack(side=LEFT, fill=BOTH)
@@ -31,6 +36,7 @@ class PanelHead(Frame):
 		self.btn_pnext.pack(side=LEFT, fill=BOTH)
 		self.btn_plast = Button(tmpframe, text='>>')
 		self.btn_plast.pack(side=LEFT, fill=BOTH)
+
 		tmpframe.pack(side=LEFT, fill=Y)
 
 	def load_db(self):

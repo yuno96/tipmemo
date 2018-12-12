@@ -21,9 +21,14 @@ class PanelBody(Frame):
 		self.title.pack(side=LEFT, fill=BOTH, expand=True)
 		tmpframe.pack(side=TOP, fill=BOTH)
 
-		self.contents = Text(self)
+		contframe = Frame(self)
+		scrollbar = Scrollbar(contframe)
+		scrollbar.pack(side=RIGHT, fill=Y)
+		self.contents = Text(contframe, yscrollcommand=scrollbar.set)
 		self.contents.bind('<KeyRelease>', self.begin_edit_contents)
-		self.contents.pack(side=TOP, fill=BOTH, expand=True)
+		self.contents.pack(fill=BOTH, expand=True)
+		scrollbar.config(command=self.contents.yview)
+		contframe.pack(side=TOP, fill=BOTH, expand=True)
 
 		self.btn_del = Button(self, text='Del',
 				command=self.test_command)
