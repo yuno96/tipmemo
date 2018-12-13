@@ -29,13 +29,17 @@ class PanelHead(Frame):
 		scrollbar.config(command=self.listb.yview)
 		listbframe.pack(side=TOP, fill=BOTH, expand=True)
 
-		self.btn_pfirst = Button(tmpframe, text='<<')
-		self.btn_pfirst.pack(side=LEFT, fill=BOTH)
-		self.btn_pprev = Button(tmpframe, text='<')
+		self.img_refresh = PhotoImage(file=os.path.join(self.mainobj.ICONPATH, 'refresh-16.png'))
+		self.btn_refresh = Button(tmpframe, text='Refresh',
+				image=self.img_refresh, compound='left',
+				command=self.mainobj.sig_refresh)
+		self.btn_refresh.pack(side=LEFT, fill=BOTH)
+
+		self.btn_pprev = Button(tmpframe, text='1')
 		self.btn_pprev.pack(side=LEFT, fill=BOTH)
-		self.btn_pnext = Button(tmpframe, text='>')
+		self.btn_pnext = Button(tmpframe, text='2')
 		self.btn_pnext.pack(side=LEFT, fill=BOTH)
-		self.btn_plast = Button(tmpframe, text='>>')
+		self.btn_plast = Button(tmpframe, text='3')
 		self.btn_plast.pack(side=LEFT, fill=BOTH)
 
 		tmpframe.pack(side=LEFT, fill=Y)
@@ -57,7 +61,6 @@ class PanelHead(Frame):
 			db = dbm.open(self.mainobj.get_db_path(), 'r')
 			for k in db.keys():
 				kl[k.decode('utf-8')] = db[k].decode('utf-8')
-				print ('--> %s' % db[k])
 			db.close()
 		except:
 			return None
@@ -84,8 +87,7 @@ class PanelHead(Frame):
 				t = key.split('-')[0] 
 				title = '%s '%time.ctime(int(t)) + hdict[key]
 				title = self.truncate_str(title)
-				self.logging.debug('-->len=%d' % 
-						self.listFont.measure(title))
+				#self.logging.debug('-->len=%d' % self.listFont.measure(title))
 				self.listb.insert(idx, title)
 			return (firstkey, hdict[firstkey])
 		else:

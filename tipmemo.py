@@ -65,6 +65,10 @@ class Tipmemo:
 		if entry:
 			self.pbody.redraw_body(entry)
 
+	def sig_refresh(self):
+		self.logging.debug('-->called')
+		self.redraw_all()
+
 	def sig_redraw_body(self, entry):
 		self.pbody.redraw_body(entry)
 

@@ -31,14 +31,19 @@ class PanelBody(Frame):
 		scrollbar.config(command=self.contents.yview)
 		contframe.pack(side=TOP, fill=BOTH, expand=True)
 
-		self.btn_del = Button(self, text='Del',
-				command=self.btn_del_command)
+		self.img_del = PhotoImage(file=os.path.join(self.mainobj.ICONPATH, 'delete-16.png'))
+		self.btn_del = Button(self, text='Del', image=self.img_del,
+				compound='left', command=self.btn_del_command)
 		self.btn_del.pack(side=RIGHT, fill=BOTH)
-		self.btn_save = Button(self, text='Save', state='disabled',
+
+		self.img_save = PhotoImage(file=os.path.join(self.mainobj.ICONPATH, 'save-16.png'))
+		self.btn_save = Button(self, text='Save', image=self.img_save,
+				compound='left', state='disabled',
 				command=self.save_body)
 		self.btn_save.pack(side=RIGHT, fill=BOTH)
-		self.btn_new = Button(self, text='New',
-				command=self.btn_new_command)
+		self.img_new = PhotoImage(file=os.path.join(self.mainobj.ICONPATH, 'newfile-16.png'))
+		self.btn_new = Button(self, text='New', image=self.img_new,
+				compound='left', command=self.btn_new_command)
 		self.btn_new.pack(side=RIGHT, fill=BOTH)
 
 		self.logging.debug('init')
