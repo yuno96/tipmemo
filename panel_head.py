@@ -22,7 +22,7 @@ class PanelHead(Frame):
 		listbframe = Frame(tmpframe)
 		scrollbar = Scrollbar(listbframe)
 		scrollbar.pack(side=RIGHT, fill=Y)
-		self.listb = Listbox(listbframe, width=48,
+		self.listb = Listbox(listbframe, width=60,
 				yscrollcommand=scrollbar.set)
 		self.listb.bind('<Double-1>', self.double_click)
 		self.listb.pack(fill=BOTH, expand=True)
@@ -41,15 +41,13 @@ class PanelHead(Frame):
 		tmpframe.pack(side=LEFT, fill=Y)
 
 		# Get the listbox font
-		listFont = font.Font(font=self.listb.cget("font"))
-
-		# Define spacing between left and right strings in terms of single "space" length
-		s0 = listFont.measure(' ')
-		s1 = listFont.measure('a')
-		s2 = listFont.measure('A')
-		s3 = listFont.measure('가')
-		s4 = listFont.measure('8')
-		self.logging.debug('listb width=%d %d %d %d %d %d'%(self.listb['width'], s0, s1, s2, s3, s4))
+		self.listFont = font.Font(font=self.listb.cget("font"))
+		s4 = self.listFont.measure('0')
+		# width of listb is the number of '0' fitted in listb
+		# Note: '0', 'A', 'a', and '가' are all different
+		self.unit_strsz = s4*self.listb['width']
+		self.logging.debug('list width=%d %d'%(self.listb['width'], 
+			self.unit_strsz))
 
 	def load_db(self):
 		kl = {}
@@ -66,6 +64,14 @@ class PanelHead(Frame):
 		self.logging.debug(kl)
 		return kl
 
+	def truncate_str(self, val):
+		for i in range(24, len(val)): #datestr size in front is 24
+			if self.listFont.measure(val[:i]) > self.unit_strsz:
+				return val[:i-3] + '...'
+		else:
+			return val
+
+
 	def redraw_head(self):
 		self.listb.delete(0, END)
 		self.listb.focus_set()
@@ -77,6 +83,9 @@ class PanelHead(Frame):
 					firstkey = key
 				t = key.split('-')[0] 
 				title = '%s '%time.ctime(int(t)) + hdict[key]
+				title = self.truncate_str(title)
+				self.logging.debug('-->len=%d' % 
+						self.listFont.measure(title))
 				self.listb.insert(idx, title)
 			return (firstkey, hdict[firstkey])
 		else:
