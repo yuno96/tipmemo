@@ -17,7 +17,7 @@ class PanelBody(Frame):
 		tmpframe = Frame(self)
 		tmplabel = Label(tmpframe, text='Title:')
 		tmplabel.pack(side=LEFT, fill=X)
-		self.title = Entry(tmpframe, state='readonly')
+		self.title = Entry(tmpframe)
 		self.title.pack(side=LEFT, fill=BOTH, expand=True)
 		tmpframe.pack(side=TOP, fill=BOTH)
 

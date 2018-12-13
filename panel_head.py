@@ -76,7 +76,7 @@ class PanelHead(Frame):
 				if not firstkey:
 					firstkey = key
 				t = key.split('-')[0] 
-				title = hdict[key] + '(%s)'%time.ctime(int(t))
+				title = '%s '%time.ctime(int(t)) + hdict[key]
 				self.listb.insert(idx, title)
 			return (firstkey, hdict[firstkey])
 		else:
@@ -105,7 +105,7 @@ class PanelHead(Frame):
 		print (self.listb.curselection()[0])
 		print (self.listb.get(self.listb.curselection()[0]))
 		val = self.listb.get(self.listb.curselection()[0])
-		tmstruct = time.strptime(val[-25:-1])
+		tmstruct = time.strptime(val[:24])
 		t = time.mktime(tmstruct)
 		self.mainobj.sig_redraw_body(('%d-0'%t, 'none'))
 		
