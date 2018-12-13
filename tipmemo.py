@@ -18,11 +18,16 @@ class Tipmemo:
 		self.logging = logging
 		self.DBPATH = os.path.join(os.getcwd(), 'data')
 		self.DBNAME = 'cache'
+		self.ICONPATH = os.path.join(os.getcwd(), 'icons')
 		self.HEADLIST_MAX = 64
 		self.root.title('Tipmemo')
 		
 		self.logging.basicConfig(level=logging.DEBUG, 
 			format='%(levelname)s:%(filename)s:%(funcName)s:%(lineno)d:%(message)s')
+
+		self.img_win = PhotoImage(file=os.path.join(self.ICONPATH,
+			'pen-32.png'))
+		root.tk.call('wm', 'iconphoto', root._w, self.img_win)
 
 		self.check_dbpath(self.DBPATH)
 
@@ -84,5 +89,7 @@ if __name__ == '__main__':
 	root = Tk()
 	root.tk.call('encoding', 'system', 'utf-8')
 	root.option_add( "*font", "lucida 9" )
+	
 	tipmemo = Tipmemo(root)
+
 	root.mainloop()
