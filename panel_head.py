@@ -8,6 +8,7 @@ import time
 import datetime
 import dbm
 from tkinter import font
+import re
 
 class PanelHead(Frame):
 	def __init__(self, mainobj, root):
@@ -67,6 +68,21 @@ class PanelHead(Frame):
 		self.logging.debug(kl)
 		return kl
 
+	def load_db2(self, filelist):
+		kl = {}
+		dbpath = self.mainobj.get_db_path()
+		self.logging.debug(dbpath)
+		try:
+			db = dbm.open(self.mainobj.get_db_path(), 'r')
+			for k in filelist:
+				#kl[k.decode('utf-8')] = db[k].decode('utf-8')
+				kl[k] = db[k].decode('utf-8')
+			db.close()
+		except:
+			return None
+		self.logging.debug(kl)
+		return kl
+
 	def truncate_str(self, val):
 		for i in range(24, len(val)): #datestr size in front is 24
 			if self.listFont.measure(val[:i]) > self.unit_strsz:
@@ -84,10 +100,27 @@ class PanelHead(Frame):
 			for idx, key in enumerate(sorted(hdict, reverse=True)):
 				if not firstkey:
 					firstkey = key
-				t = key.split('-')[0] 
+				t = key.split('-')[0]
 				title = '%s '%time.ctime(int(t)) + hdict[key]
 				title = self.truncate_str(title)
 				#self.logging.debug('-->len=%d' % self.listFont.measure(title))
+				self.listb.insert(idx, title)
+			return (firstkey, hdict[firstkey])
+		else:
+			return None
+
+	def redraw_head_wo_title(self, filelist):
+		self.listb.delete(0, END)
+		self.listb.focus_set()
+		hdict = self.load_db2(filelist)
+		firstkey = None
+		if hdict:
+			for idx, key in enumerate(sorted(hdict, reverse=True)):
+				if not firstkey:
+					firstkey = key
+				t = key.split('-')[0] 
+				title = '%s '%time.ctime(int(t)) + hdict[key]
+				title = self.truncate_str(title)
 				self.listb.insert(idx, title)
 			return (firstkey, hdict[firstkey])
 		else:

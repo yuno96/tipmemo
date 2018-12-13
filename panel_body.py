@@ -52,9 +52,13 @@ class PanelBody(Frame):
 		self.logging.debug('-->btn_del_command')
 		fname = self.fname
 		if fname:
-			self.mainobj.sig_db_delete(fname)
-			os.remove(fname)
-			#self.fname = None
+			with open(fname, 'r') as f:
+				title = f.readline().strip()
+			choice = askyesno('Warning', 'Delete ? '+title, icon='warning')
+			if choice:
+				self.mainobj.sig_db_delete(fname)
+				os.remove(fname)
+
 
 
 	def btn_new_command(self):

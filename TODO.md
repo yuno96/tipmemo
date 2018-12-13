@@ -3,17 +3,17 @@
 
 - Global
   * Add icons
-    * New, Save, Delete
-    * Refresh
-    * Search
+    * New, Save, Delete						(O)
+    * Refresh							(O)
+    * Search							(O)
   * Keep Focus on proper widget					(O)
-- panel_search
-  * Develop search function
-  * Add refresh panel_head button
+- panel_search							(O)
+  * Develop search function					(O)
+  * Add refresh panel_head button				(O)
     * fix ordering problem					(O)
 - panel_head
   * Expand panel_head size					(O)
-    * 32s(and ellipsis-...) and date string
+    * 32s(and ellipsis-...) and date string			(O)
   * Remove buttons Instead add scrollbar			(O)
 - panel_body
   * Develop button function					(O)

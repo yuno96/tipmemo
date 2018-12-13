@@ -82,8 +82,14 @@ class Tipmemo:
 		self.phead.db_delete(fname)
 		self.redraw_all()
 
-	def btn_search(self):
-		self.logging.debug('searh')
+	def sig_search_result(self, filelist):
+		entry = self.phead.redraw_head_wo_title(filelist)
+		if entry:
+			self.pbody.redraw_body(entry)
+
+
+	#def btn_search(self):
+	#	self.logging.debug('searh')
 
 	def run(self):
 		self.logging.debug('run')
