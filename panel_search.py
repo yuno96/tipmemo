@@ -37,10 +37,10 @@ class PanelSearch(Frame):
 
 	def get_matched_filelist(self, pattern, val):
 		filelist = []
+		exceptionlist = ['cache', 'cache.dat', 'cache.bak', 'cache.dir']
 		for root, dirs, files in os.walk(self.mainobj.DBPATH):
+			files = [x for x in files if x not in exceptionlist]
 			for filename in files:
-				if filename == self.mainobj.DBNAME:
-					continue
 				apath = os.path.join(root, filename)
 				with open(apath, 'r', encoding='utf-8', errors='ignore') as f:
 					if pattern.search(f.read()):
