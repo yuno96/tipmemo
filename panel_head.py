@@ -62,7 +62,6 @@ class PanelHead(Frame):
 		try:
 			db = dbm.open(self.mainobj.get_db_path(), 'r')
 			keylist = db.keys()
-			print (keylist)
 			if filelist:
 				for k in filelist:
 					kl[k] = db[k].decode('utf-8')
