@@ -24,7 +24,6 @@ class PanelSearch(Frame):
 			return
 
 		self.logging.debug('val='+val)
-		#pattern = re.compile(val.encode('utf-8'))#, re.UNICODE)
 		pattern = re.compile(val, re.IGNORECASE | re.UNICODE)
 		if not pattern:
 			self.logging.warning('failed to create pattern')

@@ -54,33 +54,22 @@ class PanelHead(Frame):
 		self.logging.debug('list width=%d %d'%(self.listb['width'], 
 			self.unit_strsz))
 
-	def load_db(self):
+	def load_db(self, filelist=None):
 		kl = {}
 		dbpath = self.mainobj.get_db_path()
 		self.logging.debug(dbpath)
 		try:
 			db = dbm.open(self.mainobj.get_db_path(), 'r')
-			for k in db.keys():
-				kl[k.decode('utf-8')] = db[k].decode('utf-8')
+			if filelist:
+				for k in filelist:
+					kl[k] = db[k].decode('utf-8')
+			else:
+				for k in db.keys():
+					kl[k.decode('utf-8')] = db[k].decode('utf-8')
 			db.close()
 		except:
 			return None
-		self.logging.debug(kl)
-		return kl
-
-	def load_db2(self, filelist):
-		kl = {}
-		dbpath = self.mainobj.get_db_path()
-		self.logging.debug(dbpath)
-		try:
-			db = dbm.open(self.mainobj.get_db_path(), 'r')
-			for k in filelist:
-				#kl[k.decode('utf-8')] = db[k].decode('utf-8')
-				kl[k] = db[k].decode('utf-8')
-			db.close()
-		except:
-			return None
-		self.logging.debug(kl)
+		#self.logging.debug(kl)
 		return kl
 
 	def truncate_str(self, val):
@@ -91,10 +80,10 @@ class PanelHead(Frame):
 			return val
 
 
-	def redraw_head(self):
+	def redraw_head(self, filelist=None):
 		self.listb.delete(0, END)
 		self.listb.focus_set()
-		hdict = self.load_db()
+		hdict = self.load_db(filelist)
 		firstkey = None
 		if hdict:
 			for idx, key in enumerate(sorted(hdict, reverse=True)):
@@ -104,23 +93,6 @@ class PanelHead(Frame):
 				title = '%s '%time.ctime(int(t)) + hdict[key]
 				title = self.truncate_str(title)
 				#self.logging.debug('-->len=%d' % self.listFont.measure(title))
-				self.listb.insert(idx, title)
-			return (firstkey, hdict[firstkey])
-		else:
-			return None
-
-	def redraw_head_wo_title(self, filelist):
-		self.listb.delete(0, END)
-		self.listb.focus_set()
-		hdict = self.load_db2(filelist)
-		firstkey = None
-		if hdict:
-			for idx, key in enumerate(sorted(hdict, reverse=True)):
-				if not firstkey:
-					firstkey = key
-				t = key.split('-')[0] 
-				title = '%s '%time.ctime(int(t)) + hdict[key]
-				title = self.truncate_str(title)
 				self.listb.insert(idx, title)
 			return (firstkey, hdict[firstkey])
 		else:
@@ -145,9 +117,7 @@ class PanelHead(Frame):
 		#self.redraw_head()
 
 	def double_click(self, event):
-		self.logging.debug('double clicked')
-		print (self.listb.curselection()[0])
-		print (self.listb.get(self.listb.curselection()[0]))
+		#self.logging.debug('double clicked')
 		val = self.listb.get(self.listb.curselection()[0])
 		tmstruct = time.strptime(val[:24])
 		t = time.mktime(tmstruct)

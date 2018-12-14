@@ -60,8 +60,9 @@ class Tipmemo:
 			except OSError as error:
 				if error.errno != errno.EEXIST:
 					raise
-	def redraw_all(self):
-		entry = self.phead.redraw_head()
+
+	def redraw_all(self, filelist=None):
+		entry = self.phead.redraw_head(filelist)
 		if entry:
 			self.pbody.redraw_body(entry)
 
@@ -83,16 +84,8 @@ class Tipmemo:
 		self.redraw_all()
 
 	def sig_search_result(self, filelist):
-		entry = self.phead.redraw_head_wo_title(filelist)
-		if entry:
-			self.pbody.redraw_body(entry)
+		self.redraw_all(filelist)
 
-
-	#def btn_search(self):
-	#	self.logging.debug('searh')
-
-	def run(self):
-		self.logging.debug('run')
 
 if __name__ == '__main__':
 
