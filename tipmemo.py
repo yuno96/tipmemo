@@ -83,7 +83,7 @@ class Tipmemo:
 		self.phead.db_delete(fname)
 		self.redraw_all()
 
-	def sig_search_result(self, filelist):
+	def sig_search_result(self, filelist=None):
 		self.redraw_all(filelist)
 
 

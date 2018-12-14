@@ -29,11 +29,13 @@ class PanelSearch(Frame):
 			self.logging.warning('failed to create pattern')
 			return
 
-		filelist = self.get_matched_filelist(pattern)
+		filelist = self.get_matched_filelist(pattern, val)
 		if filelist:
 			self.mainobj.sig_search_result(filelist)
+		else:
+			self.logging.debug('nothing to match')
 
-	def get_matched_filelist(self, pattern):
+	def get_matched_filelist(self, pattern, val):
 		filelist = []
 		for root, dirs, files in os.walk(self.mainobj.DBPATH):
 			for filename in files:
@@ -42,6 +44,9 @@ class PanelSearch(Frame):
 				apath = os.path.join(root, filename)
 				with open(apath, 'r', encoding='utf-8', errors='ignore') as f:
 					if pattern.search(f.read()):
+					#if val in f.read():
+						self.logging.debug('MATCHED-%s' % filename)
+
 						filelist.append(filename)
 
 		return filelist

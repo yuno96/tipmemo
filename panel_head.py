@@ -58,8 +58,11 @@ class PanelHead(Frame):
 		kl = {}
 		dbpath = self.mainobj.get_db_path()
 		self.logging.debug(dbpath)
+
 		try:
 			db = dbm.open(self.mainobj.get_db_path(), 'r')
+			keylist = db.keys()
+			print (keylist)
 			if filelist:
 				for k in filelist:
 					kl[k] = db[k].decode('utf-8')
@@ -67,9 +70,9 @@ class PanelHead(Frame):
 				for k in db.keys():
 					kl[k.decode('utf-8')] = db[k].decode('utf-8')
 			db.close()
-		except:
+		except Exception as e:
+			self.logging.warning(e)
 			return None
-		#self.logging.debug(kl)
 		return kl
 
 	def truncate_str(self, val):

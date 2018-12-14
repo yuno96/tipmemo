@@ -52,7 +52,7 @@ class PanelBody(Frame):
 		self.logging.debug('-->btn_del_command')
 		fname = self.fname
 		if fname:
-			with open(fname, 'r') as f:
+			with open(fname, 'r', encoding='utf-8', errors='ignore') as f:
 				title = f.readline().strip()
 			choice = askyesno('Warning', 'Delete ? '+title, icon='warning')
 			if choice:
@@ -115,7 +115,7 @@ class PanelBody(Frame):
 			self.logging.error('Cannot make filename')
 			return
 
-		with open(fname, 'w') as f:
+		with open(fname, 'w', encoding='utf-8', errors='ignore') as f:
 			f.write(title+u'\n')
 			f.write(self.contents.get(1.0, END))
 
@@ -132,7 +132,7 @@ class PanelBody(Frame):
 		self.fname = os.path.join(self.mainobj.DBPATH, entry[0])
 		try:
 			pre_title_state = self.set_title_state('normal')
-			with open(self.fname, 'r') as f:
+			with open(self.fname, 'r', encoding='utf-8', errors='ignore') as f:
 				self.title.insert(0, f.readline().strip())
 				self.contents.insert(INSERT, f.read())
 			self.set_title_state(pre_title_state)
