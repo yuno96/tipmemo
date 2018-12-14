@@ -21,6 +21,9 @@ class PanelHead(Frame):
 		tmpframe = Frame(self)
 
 		listbframe = Frame(tmpframe)
+		self.status_bar = StringVar()
+		self.status = Label(tmpframe, textvariable=self.status_bar, anchor='w')
+		self.status.pack(side=TOP, fill=X)
 		scrollbar = Scrollbar(listbframe)
 		scrollbar.pack(side=RIGHT, fill=Y)
 		self.listb = Listbox(listbframe, width=60,
@@ -36,13 +39,14 @@ class PanelHead(Frame):
 				command=self.mainobj.sig_refresh)
 		self.btn_refresh.pack(side=LEFT, fill=BOTH)
 
+		'''
 		self.btn_pprev = Button(tmpframe, text='1')
 		self.btn_pprev.pack(side=LEFT, fill=BOTH)
 		self.btn_pnext = Button(tmpframe, text='2')
 		self.btn_pnext.pack(side=LEFT, fill=BOTH)
 		self.btn_plast = Button(tmpframe, text='3')
 		self.btn_plast.pack(side=LEFT, fill=BOTH)
-
+		'''
 		tmpframe.pack(side=LEFT, fill=Y)
 
 		# Get the listbox font
@@ -86,6 +90,10 @@ class PanelHead(Frame):
 		self.listb.delete(0, END)
 		self.listb.focus_set()
 		hdict = self.load_db(filelist)
+		tmp = ' Items: %d' % len(hdict)
+		if (filelist):
+			tmp = tmp + ' (Searched)'
+		self.status_bar.set(tmp)
 		firstkey = None
 		if hdict:
 			for idx, key in enumerate(sorted(hdict, reverse=True)):

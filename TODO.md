@@ -1,6 +1,12 @@
 
 # Fri Dec 14 16:32:48 KST 2018
 
+- panel_body
+  * Enable url on text
+  * highlight button
+
+# Fri Dec 14 16:32:48 KST 2018
+
 - panel_search
   * make start to search when pressing the enter on entry
 - panel_head

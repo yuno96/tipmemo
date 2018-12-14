@@ -20,7 +20,7 @@ class PanelBody(Frame):
 		self.title = Entry(tmpframe)
 		self.title.pack(side=LEFT, fill=BOTH, expand=True)
 		tmpframe.pack(side=TOP, fill=BOTH)
-		self.title.bind('<Tab>', self.title_tab)
+		#self.title.bind('<Tab>', self.title_tab)
 
 		contframe = Frame(self)
 		scrollbar = Scrollbar(contframe)
@@ -49,9 +49,11 @@ class PanelBody(Frame):
 
 		self.logging.debug('init')
 
+	'''
 	def title_tab(self, event):
 		self.logging.debug('-->tab')
 		self.contents.focus_set()
+	'''
 
 	def btn_del_command(self):
 		self.logging.debug('-->btn_del_command')
@@ -71,6 +73,7 @@ class PanelBody(Frame):
 		self.end_edit_contents()
 		self.fname = None
 		self.clear_all_widget()
+		self.title.focus_set()
 
 
 	def set_title_state(self, curstate):

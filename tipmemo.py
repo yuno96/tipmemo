@@ -10,7 +10,7 @@ from panel_menu import *
 from panel_search import *
 from panel_head import *
 from panel_body import *
-from panel_status import *
+#from panel_status import *
 
 class Tipmemo:
 	def __init__(self, root):
@@ -44,8 +44,8 @@ class Tipmemo:
 		self.pbody.pack(side=LEFT, fill=BOTH, expand=True)
 		centerframe.pack(fill=BOTH, expand=True)
 
-		self.pstatus = PanelStatus(self, root)
-		self.pstatus.pack(fill=BOTH)
+		#self.pstatus = PanelStatus(self, root)
+		#self.pstatus.pack(fill=BOTH)
 
 		self.redraw_all()
 		self.logging.debug('pwd='+self.DBPATH)
