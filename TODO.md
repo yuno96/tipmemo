@@ -1,4 +1,19 @@
 
+# Fri Dec 14 16:32:48 KST 2018
+
+- panel_search
+  * make start to search when pressing the enter on entry
+- panel_head
+  * Add status of panel_head that shows current list info
+    * Search button: Search result: %d item(s)
+    * Refresh button:  %d items(s)
+  * ascending/descending order button of date and title 
+- panel_body
+  * tab key from title goes to the contents
+- panel_status
+  * Remove until it needs
+
+
 # Tue Dec 11 22:05:46 KST 2018
 
 - Global

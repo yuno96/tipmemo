@@ -17,6 +17,11 @@ class PanelSearch(Frame):
 		self.btn = Button(self, text="Search", command=self.btn_search)
 		self.btn.pack(side=LEFT, fill=X)
 
+		self.entry.bind('<Return>', self.entry_enter)
+
+	def entry_enter(self, event):
+		self.btn_search()
+
 	def btn_search(self):
 		val = self.entry.get().strip()
 		if not val:
