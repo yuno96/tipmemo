@@ -66,6 +66,17 @@ class PanelBody(Frame):
 
 	def btn_hl(self):
 		self.logging.debug('-->btn_hl')
+		obj = self.textb.get(SEL_FIRST, SEL_LAST)
+		print (obj)
+		ranges = self.textb.tag_ranges(SEL)
+		print (*ranges)
+		print (ranges)
+		print (ranges[0])
+		print (ranges[1])
+		if ranges:
+			print('SELECTED Text is %s' % self.textb.get(*ranges))
+		else: 
+			print('NO Selected Text')
 
 	def btn_del(self):
 		self.logging.debug('-->btn_del')
