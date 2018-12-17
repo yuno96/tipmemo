@@ -25,16 +25,21 @@ class PanelBody(Frame):
 		contframe = Frame(self)
 		scrollbar = Scrollbar(contframe)
 		scrollbar.pack(side=RIGHT, fill=Y)
-		self.contents = Text(contframe, yscrollcommand=scrollbar.set)
-		#self.contents.bind('<KeyRelease>', self.begin_edit_contents)
-		self.contents.bind('<<Modified>>', self.begin_edit_contents)
-		self.contents.pack(fill=BOTH, expand=True)
-		scrollbar.config(command=self.contents.yview)
+		self.textb = Text(contframe, yscrollcommand=scrollbar.set)
+		#self.textb.bind('<KeyRelease>', self.begin_edit_textb)
+		self.textb.bind('<<Modified>>', self.begin_edit_textb)
+		self.textb.pack(fill=BOTH, expand=True)
+		scrollbar.config(command=self.textb.yview)
 		contframe.pack(side=TOP, fill=BOTH, expand=True)
+
+		self.img_hl = PhotoImage(file=os.path.join(self.mainobj.ICONPATH, 'hl-16.png'))
+		self.btn_hl = Button(self, text='highlighter', image=self.img_hl,
+				compound='left', command=self.btn_hl)
+		self.btn_hl.pack(side=LEFT, fill=BOTH)
 
 		self.img_del = PhotoImage(file=os.path.join(self.mainobj.ICONPATH, 'delete-16.png'))
 		self.btn_del = Button(self, text='Del', image=self.img_del,
-				compound='left', command=self.btn_del_command)
+				compound='left', command=self.btn_hl)
 		self.btn_del.pack(side=RIGHT, fill=BOTH)
 
 		self.img_save = PhotoImage(file=os.path.join(self.mainobj.ICONPATH, 'save-16.png'))
@@ -49,14 +54,21 @@ class PanelBody(Frame):
 
 		self.logging.debug('init')
 
+		self.taglist = []
+		self.TAG_PREFIX_HL = '#tag highlight:'
+		self.textb.tag_config('notice', background='lemon chiffon')
+
 	'''
 	def title_tab(self, event):
 		self.logging.debug('-->tab')
-		self.contents.focus_set()
+		self.textb.focus_set()
 	'''
 
-	def btn_del_command(self):
-		self.logging.debug('-->btn_del_command')
+	def btn_hl(self):
+		self.logging.debug('-->btn_hl')
+
+	def btn_del(self):
+		self.logging.debug('-->btn_del')
 		fname = self.fname
 		if fname:
 			with open(fname, 'r', encoding='utf-8', errors='ignore') as f:
@@ -70,7 +82,7 @@ class PanelBody(Frame):
 
 	def btn_new_command(self):
 		self.set_title_state('normal')
-		self.end_edit_contents()
+		self.end_edit_textb()
 		self.fname = None
 		self.clear_all_widget()
 		self.title.focus_set()
@@ -81,21 +93,21 @@ class PanelBody(Frame):
 		self.title.config(state=curstate)
 		return title_state
 
-	def begin_edit_contents(self, val=None):
-		#self.logging.debug('-->%s'% self.contents.edit_modified())
-		if self.contents.edit_modified():
+	def begin_edit_textb(self, val=None):
+		#self.logging.debug('-->%s'% self.textb.edit_modified())
+		if self.textb.edit_modified():
 			#self.logging.debug('changed')
 			self.btn_save.config(state='normal')
 
-	def end_edit_contents(self):
+	def end_edit_textb(self):
 		#self.logging.debug("changed")
 		self.btn_save.config(state='disabled')
-		self.contents.edit_modified(False)
+		self.textb.edit_modified(False)
 
 	def clear_all_widget(self):
 		pre_title_state = self.set_title_state('normal')
 		self.title.delete('0', END)
-		self.contents.delete('1.0', END)
+		self.textb.delete('1.0', END)
 		self.set_title_state(pre_title_state)
 
 	def make_new_filename(self, t):
@@ -125,14 +137,26 @@ class PanelBody(Frame):
 
 		with open(fname, 'w', encoding='utf-8', errors='ignore') as f:
 			f.write(title+u'\n')
-			f.write(self.contents.get(1.0, END))
+			f.write(self.textb.get(1.0, END))
 
-		self.end_edit_contents()
+		self.end_edit_textb()
 		self.set_title_state('readonly')
 		if not self.fname:
 			self.mainobj.sig_db_append(fname, title)
 			self.fname = fname
 
+	def handle_highlight_tag(self, tagstr):
+		if not tagstr:
+			return
+		tagstr = tagstr[len(self.TAG_PREFIX_HL)-1:]
+		for tag_range in tagstr.split('['):
+			if not tag_range:
+				continue
+			tag_range_list = tag_range[:-1].split(',')
+			if tag_range_list:
+				tag_x = tag_range_list[0]
+				tag_y = tag_range_list[1]
+				self.textb.tag_add('notice', tag_x, tag_y)
 
 	def redraw_body(self, entry):
 		self.clear_all_widget()
@@ -141,14 +165,19 @@ class PanelBody(Frame):
 		try:
 			pre_title_state = self.set_title_state('normal')
 			with open(self.fname, 'r', encoding='utf-8', errors='ignore') as f:
-				self.title.insert(0, f.readline().strip())
-				self.contents.insert(INSERT, f.read())
+				line = f.readline().strip()
+				if line[0] == '#':
+					tagstr = line
+					line = f.readline().strip()
+				self.title.insert(0, line)
+				self.textb.insert(INSERT, f.read())
 			self.set_title_state(pre_title_state)
+			self.handle_highlight_tag(tagstr)
 		except:
 			self.logging.error('Error open: '+self.fname)
 			self.fname = None
 
-		self.end_edit_contents()
+		self.end_edit_textb()
 		self.set_title_state('readonly')
 
 
