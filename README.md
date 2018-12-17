@@ -55,3 +55,6 @@ contents
   * https://www.tutorialspoint.com/python/tk_text.htm
 - Text Widget:
   * http://infohost.nmt.edu/tcc/help/pubs/tkinter/web/text-methods.html
+  * http://epydoc.sourceforge.net/stdlib/Tkinter.Text-class.html
+- Mergeing overlapping intervals
+  * https://codereview.stackexchange.com/questions/69242/merging-overlapping-intervals

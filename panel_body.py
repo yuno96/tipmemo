@@ -39,7 +39,7 @@ class PanelBody(Frame):
 
 		self.img_del = PhotoImage(file=os.path.join(self.mainobj.ICONPATH, 'delete-16.png'))
 		self.btn_del = Button(self, text='Del', image=self.img_del,
-				compound='left', command=self.btn_hl)
+				compound='left', command=self.btn_del)
 		self.btn_del.pack(side=RIGHT, fill=BOTH)
 
 		self.img_save = PhotoImage(file=os.path.join(self.mainobj.ICONPATH, 'save-16.png'))
@@ -54,7 +54,7 @@ class PanelBody(Frame):
 
 		self.logging.debug('init')
 
-		self.taglist = []
+		self.tag_hl = []
 		self.TAG_PREFIX_HL = '#tag highlight:'
 		self.textb.tag_config('notice', background='lemon chiffon')
 
@@ -64,19 +64,59 @@ class PanelBody(Frame):
 		self.textb.focus_set()
 	'''
 
+	def clear_tag_hl(self):
+		self.tag_hl.clear()
+
+	'''
+	def merge_ranges(self, intervals):
+		sorted_by_lower_bound = sorted(intervals, key=lambda l: l[0])
+		merged = []
+		for higher in sorted_by_lower_bound:
+			if not merged:
+				merged.append(higher)
+			else:
+				lower = merged[-1]
+				#added this condition branch
+				if higher[0] - lower[1] == 1:
+					merged[-1] = (lower[0], higher[1])  # replace by merged interval
+				#end addition. Also changed if below to elif
+				# test for intersection between lower and higher:
+				# we know via sorting that lower[0] <= higher[0]
+				elif higher[0] <= lower[1]:
+					upper_bound = max(lower[1], higher[1])
+					merged[-1] = (lower[0], upper_bound)  # replace by merged interval
+				else:
+					merged.append(higher)
+		return merged
+	'''
+
+	def ugly_convert(self, val):
+		print (val)
+		a, b = val.split('.')
+		return int(a)*1000+int(b)
+
 	def btn_hl(self):
 		self.logging.debug('-->btn_hl')
-		obj = self.textb.get(SEL_FIRST, SEL_LAST)
-		print (obj)
+		print (self.textb.index(INSERT))
 		ranges = self.textb.tag_ranges(SEL)
-		print (*ranges)
-		print (ranges)
-		print (ranges[0])
-		print (ranges[1])
 		if ranges:
-			print('SELECTED Text is %s' % self.textb.get(*ranges))
-		else: 
-			print('NO Selected Text')
+			x = str(ranges[0])
+			y = str(ranges[1])
+			self.tag_hl.append([x, y])
+			#self.tag_hl = self.merge_ranges(self.tag_hl)
+			print (self.tag_hl)
+			self.textb.tag_add('notice', x, y)
+			self.textb.edit_modified(True)
+			self.begin_edit_textb()
+		else:
+			x = str(self.textb.index(INSERT))
+			for idx, v in enumerate(self.tag_hl):
+				self.logging.debug('%s %s %s' % (x, v[0], v[1]))
+				if self.ugly_convert(v[0]) <= self.ugly_convert(x) <= self.ugly_convert(v[1]):
+					self.textb.tag_remove('notice', v[0], v[1])
+					self.logging.debug('%s <= %s <= %s' % (v[0], x, v[1]))
+					del self.tag_hl[idx]
+					return
 
 	def btn_del(self):
 		self.logging.debug('-->btn_del')
@@ -89,15 +129,12 @@ class PanelBody(Frame):
 				self.mainobj.sig_db_delete(fname)
 				os.remove(fname)
 
-
-
 	def btn_new_command(self):
 		self.set_title_state('normal')
 		self.end_edit_textb()
 		self.fname = None
 		self.clear_all_widget()
 		self.title.focus_set()
-
 
 	def set_title_state(self, curstate):
 		title_state = self.title['state']
@@ -147,6 +184,11 @@ class PanelBody(Frame):
 			return
 
 		with open(fname, 'w', encoding='utf-8', errors='ignore') as f:
+			if self.tag_hl:
+				f.write(self.TAG_PREFIX_HL)
+				for l in self.tag_hl:
+					f.write('['+l[0]+','+l[1]+']')
+				f.write('\n')
 			f.write(title+u'\n')
 			f.write(self.textb.get(1.0, END))
 
@@ -156,10 +198,10 @@ class PanelBody(Frame):
 			self.mainobj.sig_db_append(fname, title)
 			self.fname = fname
 
-	def handle_highlight_tag(self, tagstr):
+	def handle_tag_hl(self, tagstr):
 		if not tagstr:
 			return
-		tagstr = tagstr[len(self.TAG_PREFIX_HL)-1:]
+		tagstr = tagstr[len(self.TAG_PREFIX_HL):]
 		for tag_range in tagstr.split('['):
 			if not tag_range:
 				continue
@@ -167,23 +209,27 @@ class PanelBody(Frame):
 			if tag_range_list:
 				tag_x = tag_range_list[0]
 				tag_y = tag_range_list[1]
+				self.tag_hl = append([tag_x, tag_y])
 				self.textb.tag_add('notice', tag_x, tag_y)
 
 	def redraw_body(self, entry):
 		self.clear_all_widget()
+		self.clear_tag_hl()
 
 		self.fname = os.path.join(self.mainobj.DBPATH, entry[0])
 		try:
+			#import pdb;pdb.set_trace()
 			pre_title_state = self.set_title_state('normal')
 			with open(self.fname, 'r', encoding='utf-8', errors='ignore') as f:
 				line = f.readline().strip()
+
 				if line[0] == '#':
 					tagstr = line
 					line = f.readline().strip()
 				self.title.insert(0, line)
 				self.textb.insert(INSERT, f.read())
 			self.set_title_state(pre_title_state)
-			self.handle_highlight_tag(tagstr)
+			self.handle_tag_hl(tagstr)
 		except:
 			self.logging.error('Error open: '+self.fname)
 			self.fname = None
