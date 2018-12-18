@@ -24,6 +24,7 @@ class Tipmemo:
 		self.LOCK_FILE = os.path.join(gettempdir(), 'tipmemo-flock')
 		self.HEADLIST_MAX = 64
 		self.root.title('Tipmemo')
+		self.init_file_lock()
 		
 		self.logging.basicConfig(level=logging.DEBUG, 
 			format='%(levelname)s:%(filename)s:%(funcName)s:%(lineno)d:%(message)s')
@@ -50,6 +51,7 @@ class Tipmemo:
 		#self.pstatus = PanelStatus(self, root)
 		#self.pstatus.pack(fill=BOTH)
 
+	def run(self):
 		self.redraw_all()
 		self.logging.debug('pwd=%s lockfile=%s' % (self.DBPATH, 
 			self.LOCK_FILE))
@@ -66,6 +68,9 @@ class Tipmemo:
 
 	def file_unlock(self, fd):
 		fd.close()
+
+	def init_file_lock(self):
+		open(self.LOCK_FILE, 'w+').close()
 
 	def get_db_path(self):
 		return os.path.join(self.DBPATH, self.DBNAME)
@@ -111,5 +116,6 @@ if __name__ == '__main__':
 	root.option_add( "*font", "lucida 9" )
 	
 	tipmemo = Tipmemo(root)
+	tipmemo.run()
 
 	root.mainloop()
