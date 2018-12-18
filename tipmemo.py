@@ -11,7 +11,7 @@ import sys
 import errno
 import logging
 from tkinter import *
-import fcntl
+import portalocker
 from tempfile import gettempdir
 
 class Tipmemo:
@@ -55,13 +55,13 @@ class Tipmemo:
 			self.LOCK_FILE))
 
 	def file_write_lock(self):
-		fd = open(self.LOCK_FILE, 'w')
-		fcntl.flock(fd, fcntl.LOCK_EX)
+		fd = open(self.LOCK_FILE, 'r+')
+		portalocker.lock(fd, portalocker.LOCK_EX)
 		return fd
 
 	def file_read_lock(self):
-		fd = open(self.LOCK_FILE, 'w')
-		fcntl.flock(fd, fcntl.LOCK_SH)
+		fd = open(self.LOCK_FILE, 'r+')
+		portalocker.lock(fd, portalocker.LOCK_SH)
 		return fd 
 
 	def file_unlock(self, fd):
