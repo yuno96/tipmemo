@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 
-import os
-import sys
-import errno
-import logging
-from tkinter import *
 from panel_menu import *
 from panel_search import *
 from panel_head import *
 from panel_body import *
 #from panel_status import *
+import os
+import sys
+import errno
+import logging
+from tkinter import *
+import portalocker
+from tempfile import gettempdir
 
 class Tipmemo:
 	def __init__(self, root):
@@ -19,6 +21,7 @@ class Tipmemo:
 		self.DBPATH = os.path.join(os.getcwd(), 'data')
 		self.DBNAME = 'cache'
 		self.ICONPATH = os.path.join(os.getcwd(), 'icons')
+		self.LOCK_FILE = os.path.join(gettempdir(), 'tipmemo-flock')
 		self.HEADLIST_MAX = 64
 		self.root.title('Tipmemo')
 		
@@ -48,7 +51,21 @@ class Tipmemo:
 		#self.pstatus.pack(fill=BOTH)
 
 		self.redraw_all()
-		self.logging.debug('pwd='+self.DBPATH)
+		self.logging.debug('pwd=%s lockfile=%s' % (self.DBPATH, 
+			self.LOCK_FILE))
+
+	def file_write_lock(self):
+		fd = open(self.LOCK_FILE, 'r+')
+		portalocker.lock(fd, portalocker.LOCK_EX)
+		return fd
+
+	def file_read_lock(self):
+		fd = open(self.LOCK_FILE, 'r+')
+		portalocker.lock(fd, portalocker.LOCK_SH)
+		return fd 
+
+	def file_unlock(self, fd):
+		fd.close()
 
 	def get_db_path(self):
 		return os.path.join(self.DBPATH, self.DBNAME)
