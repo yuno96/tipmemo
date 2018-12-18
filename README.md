@@ -55,3 +55,7 @@ contents
   * https://www.tutorialspoint.com/python/tk_text.htm
 - Text Widget:
   * http://infohost.nmt.edu/tcc/help/pubs/tkinter/web/text-methods.html
+- https://infohost.nmt.edu/tcc/help/pubs/tkinter/tkinter.pdf
+- https://doc.lagout.org/programmation/python/Python%20and%20Tkinter%20Programming%20%282000%29.pdf
+- http://ebook.pldworld.com/_eBook/-Packt%20Publishing%20Limited-/9781785889738-TKINTER_GUI_APPLICATION_DEVELOPMENT_BLUEPRINTS.pdf
+- http://homepage.cem.itesm.mx/carbajal/EmbeddedSystems/SLIDES/Python/GUI%20Programming%20using%20Tkinter.pdf

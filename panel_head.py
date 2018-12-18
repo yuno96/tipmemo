@@ -64,6 +64,7 @@ class PanelHead(Frame):
 		self.logging.debug(dbpath)
 
 		try:
+			lockfd = self.mainobj.file_read_lock()
 			db = dbm.open(self.mainobj.get_db_path(), 'r')
 			keylist = db.keys()
 			if filelist:
@@ -73,6 +74,7 @@ class PanelHead(Frame):
 				for k in db.keys():
 					kl[k.decode('utf-8')] = db[k].decode('utf-8')
 			db.close()
+			self.mainobj.file_unlock(lockfd)
 		except Exception as e:
 			self.logging.warning(e)
 			return None
@@ -112,8 +114,10 @@ class PanelHead(Frame):
 		self.logging.debug('-->%s %s' % (fname, title))
 
 		name = os.path.basename(fname)
+		lockfd = self.mainobj.file_write_lock()
 		with dbm.open(self.mainobj.get_db_path(), 'c') as db:
 			db[name] = title
+		self.mainobj.file_unlock(lockfd)
 
 		#self.redraw_head()
 
@@ -121,8 +125,10 @@ class PanelHead(Frame):
 		self.logging.debug('-->' + fname)
 
 		name = os.path.basename(fname)
+		lockfd = self.mainobj.file_write_lock()
 		with dbm.open(self.mainobj.get_db_path(), 'c') as db:
 			del db[name]
+		self.mainobj.file_unlock(lockfd)
 
 		#self.redraw_head()
 

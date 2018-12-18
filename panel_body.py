@@ -146,9 +146,11 @@ class PanelBody(Frame):
 			self.logging.error('Cannot make filename')
 			return
 
+		lockfd = self.mainobj.file_write_lock()
 		with open(fname, 'w', encoding='utf-8', errors='ignore') as f:
 			f.write(title+u'\n')
 			f.write(self.textb.get(1.0, END))
+		self.mainobj.file_unlock(lockfd)
 
 		self.end_edit_textb()
 		self.set_title_state('readonly')
