@@ -54,65 +54,43 @@ class PanelBody(Frame):
 
 		self.logging.debug('init')
 
-		#self.tag_hl = []
 		self.TAG_PREFIX_HL = '#tag highlight:'
 		self.textb.tag_config('notice', background='lemon chiffon')
 
 	def clear_textb_tag_hl(self):
-		#self.tag_hl.clear()
 		self.textb.tag_delete('notice')
 		self.textb.tag_config('notice', background='lemon chiffon')
 
-	#def remove_tag(self, idx, range_tuple):
 	def remove_tag(self, begin, end):
 		self.logging.debug(self.textb.tag_ranges('notice'))
 
 		self.textb.tag_remove('notice', begin, end)
-		#del self.tag_hl[idx]
 
 	def btn_hl(self):
 		textb_edited = False
 		ranges = self.textb.tag_ranges(SEL)
+		self.logging.debug(ranges)
 		if ranges:
 			tag_indices =  self.textb.tag_ranges('notice')
 			for begin, end in zip(tag_indices[0::2], tag_indices[1::2]):
-				self.remove_tag(idx, begin, end)
+				if begin == ranges[0] and end == ranges[1]:
+					self.logging.debug('%s %s %s %s' % (begin, end, ranges[0], ranges[1]))
+					self.remove_tag(begin, end)
 			else:
 				self.textb.tag_add('notice', ranges[0], ranges[1])
 			textb_edited = True
-			'''
-			for idx, xy in enumerate(self.tag_hl):
-				if xy == ranges:
-					self.logging.debug(xy)
-					self.remove_tag(idx, ranges)
-			else:
-				#self.tag_hl.append(ranges)
-				print (self.tag_hl)
-				self.textb.tag_add('notice', ranges[0], ranges[1])
-				self.textb.edit_modified(True)
-				self.begin_edit_textb()
-			'''
 		else:
 			x = self.textb.index(INSERT)
 
 			self.logging.debug(self.textb.tag_ranges('notice'))
 			tag_indices =  self.textb.tag_ranges('notice')
 			for begin, end in zip(tag_indices[0::2], tag_indices[1::2]):
-				#self.logging.debug(ranges)
-				#self.logging.debug(type(ranges))
-				#self.logging.debug(ranges[0])
-				#self.logging.debug(type(ranges[0]))
 				v0 = str(begin)
 				v1 = str(end)
 				if self.textb.compare(v0, '<=', x) and self.textb.compare(x, '<=', v1):
 					self.remove_tag(begin, end)
 					textb_edited = True
-			'''
-			for idx, v in enumerate(self.tag_hl):
-				self.logging.debug('%s %s %s' % (x, v[0], v[1]))
-				if self.textb.compare(v[0], '<=', x) and self.textb.compare(x, '<=', v[1]):
-					self.remove_tag(idx, v)
-			'''
+
 		if textb_edited:
 			self.textb.edit_modified(True)
 			self.begin_edit_textb()
@@ -184,11 +162,15 @@ class PanelBody(Frame):
 
 		lockfd = self.mainobj.file_write_lock()
 		with open(fname, 'w', encoding='utf-8', errors='ignore') as f:
-			if self.tag_hl:
-				f.write(self.TAG_PREFIX_HL)
-				for l in self.tag_hl:
-					f.write('['+str(l[0])+','+str(l[1])+']')
-				f.write('\n')
+
+			tag_str = ''
+			tag_indices =  self.textb.tag_ranges('notice')
+			for begin, end in zip(tag_indices[0::2], tag_indices[1::2]):
+				tag_str += '['+str(begin)+','+str(end)+']'
+
+			if tag_str:
+				f.write(self.TAG_PREFIX_HL+tag_str+'\n')
+
 			f.write(title+u'\n')
 			f.write(self.textb.get(1.0, END))
 		self.mainobj.file_unlock(lockfd)
@@ -210,12 +192,8 @@ class PanelBody(Frame):
 			if tag_xy:
 				tag_x = tag_xy[0]
 				tag_y = tag_xy[1]
-				#self.tag_hl = append([tag_x, tag_y])
 				self.logging.debug('tag: %s' % tag_xy)
 				self.textb.tag_add('notice', tag_x, tag_y)
-				#print (self.textb.index(tag_x))
-				#print (type(self.textb.index(tag_x)))
-				#self.tag_hl.append((tag_x, tag_y))
 
 	def redraw_body(self, entry):
 		self.clear_all_widget()
@@ -223,7 +201,6 @@ class PanelBody(Frame):
 
 		self.fname = os.path.join(self.mainobj.DBPATH, entry[0])
 		try:
-			#import pdb;pdb.set_trace()
 			pre_title_state = self.set_title_state('normal')
 			with open(self.fname, 'r', encoding='utf-8', errors='ignore') as f:
 				line = f.readline().strip()
