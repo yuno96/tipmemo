@@ -54,16 +54,16 @@ class PanelBody(Frame):
 
 		self.logging.debug('init')
 
-		self.TAG_PREFIX_HL = '#tag highlight:'
-		self.textb.tag_config('notice', background='lemon chiffon')
+		self.TAG_HL_PREFIX = '#tag highlight:'
+		self.TAG_HL_COLOR = 'gold'
+		self.textb.tag_config('notice', background=self.TAG_HL_COLOR)
 
 	def clear_textb_tag_hl(self):
 		self.textb.tag_delete('notice')
-		self.textb.tag_config('notice', background='lemon chiffon')
+		self.textb.tag_config('notice', background=self.TAG_HL_COLOR)
 
 	def remove_tag(self, begin, end):
 		self.logging.debug(self.textb.tag_ranges('notice'))
-
 		self.textb.tag_remove('notice', begin, end)
 
 	def btn_hl(self):
@@ -168,7 +168,7 @@ class PanelBody(Frame):
 				tag_str += '['+str(begin)+','+str(end)+']'
 
 			if tag_str:
-				f.write(self.TAG_PREFIX_HL+tag_str+'\n')
+				f.write(self.TAG_HL_PREFIX+tag_str+'\n')
 
 			f.write(title+u'\n')
 			f.write(self.textb.get(1.0, END))
@@ -183,7 +183,7 @@ class PanelBody(Frame):
 	def handle_textb_tag_hl(self, tagstr):
 		if not tagstr:
 			return
-		tagstr = tagstr[len(self.TAG_PREFIX_HL):]
+		tagstr = tagstr[len(self.TAG_HL_PREFIX):]
 		for tag_range in tagstr.split('['):
 			if not tag_range:
 				continue
