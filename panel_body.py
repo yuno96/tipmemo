@@ -69,7 +69,7 @@ class PanelBody(Frame):
 	def btn_hl(self):
 		textb_edited = False
 		ranges = self.textb.tag_ranges(SEL)
-		self.logging.debug(ranges)
+		#self.logging.debug(ranges)
 		if ranges:
 			tag_indices =  self.textb.tag_ranges('notice')
 			for begin, end in zip(tag_indices[0::2], tag_indices[1::2]):
@@ -96,11 +96,12 @@ class PanelBody(Frame):
 			self.begin_edit_textb()
 
 	def btn_del(self):
-		self.logging.debug('-->btn_del')
 		fname = self.fname
 		if fname:
+			lockfd = self.mainobj.file_read_lock()
 			with open(fname, 'r', encoding='utf-8', errors='ignore') as f:
 				title = f.readline().strip()
+			self.mainobj.file_unlock(lockfd)
 			choice = askyesno('Warning', 'Delete ? '+title, icon='warning')
 			if choice:
 				self.mainobj.sig_db_delete(fname)
@@ -119,13 +120,11 @@ class PanelBody(Frame):
 		return title_state
 
 	def begin_edit_textb(self, val=None):
-		#self.logging.debug('-->%s'% self.textb.edit_modified())
 		if self.textb.edit_modified():
 			#self.logging.debug('changed')
 			self.btn_save.config(state='normal')
 
 	def end_edit_textb(self):
-		#self.logging.debug("changed")
 		self.btn_save.config(state='disabled')
 		self.textb.edit_modified(False)
 
@@ -192,7 +191,7 @@ class PanelBody(Frame):
 			if tag_xy:
 				tag_x = tag_xy[0]
 				tag_y = tag_xy[1]
-				self.logging.debug('tag: %s' % tag_xy)
+				#self.logging.debug('tag: %s' % tag_xy)
 				self.textb.tag_add('notice', tag_x, tag_y)
 
 	def redraw_body(self, entry):
@@ -201,7 +200,9 @@ class PanelBody(Frame):
 
 		self.fname = os.path.join(self.mainobj.DBPATH, entry[0])
 		try:
+			tagstr = ''
 			pre_title_state = self.set_title_state('normal')
+			lockfd = self.mainobj.file_read_lock()
 			with open(self.fname, 'r', encoding='utf-8', errors='ignore') as f:
 				line = f.readline().strip()
 
@@ -210,10 +211,12 @@ class PanelBody(Frame):
 					line = f.readline().strip()
 				self.title.insert(0, line)
 				self.textb.insert(INSERT, f.read())
+			self.mainobj.file_unlock(lockfd)
 			self.set_title_state(pre_title_state)
-			self.handle_textb_tag_hl(tagstr)
-		except:
-			self.logging.error('Error open: '+self.fname)
+			if tagstr:
+				self.handle_textb_tag_hl(tagstr)
+		except Exception as e:
+			self.logging.error(e)
 			self.fname = None
 
 		self.end_edit_textb()

@@ -47,11 +47,13 @@ class PanelSearch(Frame):
 			files = [x for x in files if x not in exceptionlist]
 			for filename in files:
 				apath = os.path.join(root, filename)
+				lockfd = self.mainobj.file_read_lock()
 				with open(apath, 'r', encoding='utf-8', errors='ignore') as f:
 					if pattern.search(f.read()):
 					#if val in f.read():
 						self.logging.debug('MATCHED-%s' % filename)
 
 						filelist.append(filename)
+				self.mainobj.file_unlock(lockfd)
 
 		return filelist
