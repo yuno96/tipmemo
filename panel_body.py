@@ -100,7 +100,10 @@ class PanelBody(Frame):
 		if fname:
 			lockfd = self.mainobj.file_read_lock()
 			with open(fname, 'r', encoding='utf-8', errors='ignore') as f:
-				title = f.readline().strip()
+				while True:
+					title = f.readline().strip()
+					if title[0] != '#':
+						break
 			self.mainobj.file_unlock(lockfd)
 			choice = askyesno('Warning', 'Delete ? '+title, icon='warning')
 			if choice:
@@ -161,7 +164,6 @@ class PanelBody(Frame):
 
 		lockfd = self.mainobj.file_write_lock()
 		with open(fname, 'w', encoding='utf-8', errors='ignore') as f:
-
 			tag_str = ''
 			tag_indices =  self.textb.tag_ranges('notice')
 			for begin, end in zip(tag_indices[0::2], tag_indices[1::2]):
@@ -205,7 +207,6 @@ class PanelBody(Frame):
 			lockfd = self.mainobj.file_read_lock()
 			with open(self.fname, 'r', encoding='utf-8', errors='ignore') as f:
 				line = f.readline().strip()
-
 				if line[0] == '#':
 					tagstr = line
 					line = f.readline().strip()

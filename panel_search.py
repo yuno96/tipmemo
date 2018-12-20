@@ -5,6 +5,7 @@ import os
 import sys
 from tkinter import *
 import re
+from tkinter.messagebox import showinfo, showerror, askyesno
 
 class PanelSearch(Frame):
 	def __init__(self, mainobj, root):
@@ -26,6 +27,7 @@ class PanelSearch(Frame):
 		val = self.entry.get().strip()
 		if not val:
 			self.logging.debug('no entry value')
+			self.mainobj.sig_refresh()
 			return
 
 		self.logging.debug('val='+val)
@@ -38,7 +40,8 @@ class PanelSearch(Frame):
 		if filelist:
 			self.mainobj.sig_search_result(filelist)
 		else:
-			self.logging.debug('nothing to match')
+			showinfo('info', 'There is nothing matched')
+			return
 
 	def get_matched_filelist(self, pattern, val):
 		filelist = []
