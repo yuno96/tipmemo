@@ -69,7 +69,7 @@ class PanelBody(Frame):
 	def btn_hl(self):
 		textb_edited = False
 		ranges = self.textb.tag_ranges(SEL)
-		#self.logging.debug(ranges)
+		self.logging.debug(ranges)
 		if ranges:
 			tag_indices =  self.textb.tag_ranges('notice')
 			for begin, end in zip(tag_indices[0::2], tag_indices[1::2]):
@@ -121,7 +121,7 @@ class PanelBody(Frame):
 
 	def begin_edit_textb(self, val=None):
 		if self.textb.edit_modified():
-			#self.logging.debug('changed')
+			self.logging.debug('changed')
 			self.btn_save.config(state='normal')
 
 	def end_edit_textb(self):
@@ -191,7 +191,7 @@ class PanelBody(Frame):
 			if tag_xy:
 				tag_x = tag_xy[0]
 				tag_y = tag_xy[1]
-				#self.logging.debug('tag: %s' % tag_xy)
+				self.logging.debug('tag: %s' % tag_xy)
 				self.textb.tag_add('notice', tag_x, tag_y)
 
 	def redraw_body(self, entry):

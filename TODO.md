@@ -1,11 +1,22 @@
 
-# Fri Dec 14 16:32:48 KST 2018
+# TODO
+
+- panel_menu
+  * Import/Export data
+- panel_search
+  * make panel_head empty when no search result
+- panel_body
+  * make url link on textb
+
+
+# Done
+
+## Fri Dec 14 16:32:48 KST 2018
 
 - panel_body
-  * Enable url on text
   * highlight button
 
-# Fri Dec 14 16:32:48 KST 2018
+## Fri Dec 14 16:32:48 KST 2018
 
 - panel_search
   * make start to search when pressing the enter on entry
@@ -20,7 +31,7 @@
   * Remove until it needs
 
 
-# Tue Dec 11 22:05:46 KST 2018
+## Tue Dec 11 22:05:46 KST 2018
 
 - Global
   * Add icons

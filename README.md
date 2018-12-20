@@ -15,7 +15,7 @@ Easy to record and search a tons of tips working on the cross-platform
 | panel_head | panel_body   |
 |            |              |
 +------------+--------------+
-| panel_status              |
+| panel_status              | <-- hidden
 +---------------------------+
 ```
 

@@ -26,7 +26,7 @@ class Tipmemo:
 		self.root.title('Tipmemo')
 		self.init_file_lock()
 		
-		self.logging.basicConfig(level=logging.DEBUG, 
+		self.logging.basicConfig(level=logging.WARNING,
 			format='%(levelname)s:%(filename)s:%(funcName)s:%(lineno)d:%(message)s')
 
 		self.img_win = PhotoImage(file=os.path.join(self.ICONPATH,

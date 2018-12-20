@@ -133,7 +133,7 @@ class PanelHead(Frame):
 		#self.redraw_head()
 
 	def double_click(self, event):
-		#self.logging.debug('double clicked')
+		self.logging.debug('double clicked')
 		val = self.listb.get(self.listb.curselection()[0])
 		tmstruct = time.strptime(val[:24])
 		t = time.mktime(tmstruct)
