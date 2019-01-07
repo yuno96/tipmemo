@@ -1,0 +1,58 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+PanelBody	panel_body.py	/^class PanelBody(Frame):$/;"	c
+PanelHead	panel_head.py	/^class PanelHead(Frame):$/;"	c
+PanelMenu	panel_menu.py	/^class PanelMenu(Frame):$/;"	c
+PanelSearch	panel_search.py	/^class PanelSearch(Frame):$/;"	c
+PanelStatus	panel_status.py	/^class PanelStatus(Frame):$/;"	c
+Tipmemo	tipmemo.py	/^class Tipmemo:$/;"	c
+__init__	panel_body.py	/^	def __init__(self, mainobj, root):$/;"	m	class:PanelBody
+__init__	panel_head.py	/^	def __init__(self, mainobj, root):$/;"	m	class:PanelHead
+__init__	panel_menu.py	/^	def __init__(self, mainobj, root):$/;"	m	class:PanelMenu
+__init__	panel_search.py	/^	def __init__(self, mainobj, root):$/;"	m	class:PanelSearch
+__init__	panel_status.py	/^	def __init__(self, mainobj, root):$/;"	m	class:PanelStatus
+__init__	tipmemo.py	/^	def __init__(self, root):$/;"	m	class:Tipmemo
+begin_edit_textb	panel_body.py	/^	def begin_edit_textb(self, val=None):$/;"	m	class:PanelBody
+btn_del	panel_body.py	/^	def btn_del(self):$/;"	m	class:PanelBody
+btn_hl	panel_body.py	/^	def btn_hl(self):$/;"	m	class:PanelBody
+btn_new_command	panel_body.py	/^	def btn_new_command(self):$/;"	m	class:PanelBody
+btn_search	panel_search.py	/^	def btn_search(self):$/;"	m	class:PanelSearch
+check_dbpath	tipmemo.py	/^	def check_dbpath(self, directory):$/;"	m	class:Tipmemo
+clear_all_widget	panel_body.py	/^	def clear_all_widget(self):$/;"	m	class:PanelBody
+clear_textb_tag_hl	panel_body.py	/^	def clear_textb_tag_hl(self):$/;"	m	class:PanelBody
+db_append	panel_head.py	/^	def db_append(self, fname, title):$/;"	m	class:PanelHead
+db_delete	panel_head.py	/^	def db_delete(self, fname):$/;"	m	class:PanelHead
+double_click	panel_head.py	/^	def double_click(self, event):$/;"	m	class:PanelHead
+end_edit_textb	panel_body.py	/^	def end_edit_textb(self):$/;"	m	class:PanelBody
+entry_enter	panel_search.py	/^	def entry_enter(self, event):$/;"	m	class:PanelSearch
+file_read_lock	tipmemo.py	/^	def file_read_lock(self):$/;"	m	class:Tipmemo
+file_unlock	tipmemo.py	/^	def file_unlock(self, fd):$/;"	m	class:Tipmemo
+file_write_lock	tipmemo.py	/^	def file_write_lock(self):$/;"	m	class:Tipmemo
+get_db_path	tipmemo.py	/^	def get_db_path(self):$/;"	m	class:Tipmemo
+get_matched_filelist	panel_search.py	/^	def get_matched_filelist(self, pattern, val):$/;"	m	class:PanelSearch
+handle_textb_tag_hl	panel_body.py	/^	def handle_textb_tag_hl(self, tagstr):$/;"	m	class:PanelBody
+init_file_lock	tipmemo.py	/^	def init_file_lock(self):$/;"	m	class:Tipmemo
+load_db	panel_head.py	/^	def load_db(self, filelist=None):$/;"	m	class:PanelHead
+make_new_filename	panel_body.py	/^	def make_new_filename(self, t):$/;"	m	class:PanelBody
+open_db	panel_menu.py	/^	def open_db(self):$/;"	m	class:PanelMenu
+redraw_all	tipmemo.py	/^	def redraw_all(self, filelist=None):$/;"	m	class:Tipmemo
+redraw_body	panel_body.py	/^	def redraw_body(self, entry):$/;"	m	class:PanelBody
+redraw_head	panel_head.py	/^	def redraw_head(self, filelist=None):$/;"	m	class:PanelHead
+remove_tag	panel_body.py	/^	def remove_tag(self, begin, end):$/;"	m	class:PanelBody
+root	tipmemo.py	/^	root = Tk()$/;"	v
+run	tipmemo.py	/^	def run(self):$/;"	m	class:Tipmemo
+save_body	panel_body.py	/^	def save_body(self):$/;"	m	class:PanelBody
+set_title_state	panel_body.py	/^	def set_title_state(self, curstate):$/;"	m	class:PanelBody
+show_about	panel_menu.py	/^	def show_about(self):$/;"	m	class:PanelMenu
+show_help	panel_menu.py	/^	def show_help(self):$/;"	m	class:PanelMenu
+sig_db_append	tipmemo.py	/^	def sig_db_append(self, fname, title):$/;"	m	class:Tipmemo
+sig_db_delete	tipmemo.py	/^	def sig_db_delete(self, fname):$/;"	m	class:Tipmemo
+sig_redraw_body	tipmemo.py	/^	def sig_redraw_body(self, entry):$/;"	m	class:Tipmemo
+sig_refresh	tipmemo.py	/^	def sig_refresh(self):$/;"	m	class:Tipmemo
+sig_search_result	tipmemo.py	/^	def sig_search_result(self, filelist=None):$/;"	m	class:Tipmemo
+tipmemo	tipmemo.py	/^	tipmemo = Tipmemo(root)$/;"	v
+truncate_str	panel_head.py	/^	def truncate_str(self, val):$/;"	m	class:PanelHead

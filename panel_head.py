@@ -61,11 +61,14 @@ class PanelHead(Frame):
 	def load_db(self, filelist=None):
 		kl = {}
 		dbpath = self.mainobj.get_db_path()
-		self.logging.debug(dbpath)
+		if not os.path.exists(dbpath):
+			self.logging.debug('no file' + dbpath)
+			return None
+		self.logging.info(dbpath)
 
 		try:
 			lockfd = self.mainobj.file_read_lock()
-			db = dbm.open(self.mainobj.get_db_path(), 'r')
+			db = dbm.open(dbpath, 'r')
 			keylist = db.keys()
 			if filelist:
 				for k in filelist:
@@ -92,6 +95,8 @@ class PanelHead(Frame):
 		self.listb.delete(0, END)
 		self.listb.focus_set()
 		hdict = self.load_db(filelist)
+		if not hdict:
+			return None
 		tmp = ' Items: %d' % len(hdict)
 		if (filelist):
 			tmp = tmp + ' (Searched)'
