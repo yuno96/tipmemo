@@ -113,7 +113,10 @@ if __name__ == '__main__':
 
 	root = Tk()
 	root.tk.call('encoding', 'system', 'utf-8')
-	root.option_add( "*font", "lucida 9" )
+	#f = font.nametofont('TkFixedFont')
+	#f.configure(size=9)
+	f = 'lucida 9'
+	root.option_add( "*font", f)
 	
 	tipmemo = Tipmemo(root)
 	tipmemo.run()

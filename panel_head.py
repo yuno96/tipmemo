@@ -23,11 +23,23 @@ class PanelHead(Frame):
 		listbframe = Frame(tmpframe)
 		self.status_bar = StringVar()
 		self.status = Label(tmpframe, textvariable=self.status_bar, anchor='w')
+
+		#small_font = font.Font(family='{TkFixedFont}', size=10)
+		#f = font.Font(name='TkFixedFont', size=9, exists=True, root=root)
+		#small_font = font.Font.actual(f)
+		#small_font = (f['family'], 10)
+		#f.configure(size=9)
+		#small_font = font.Font.actual(f)
+		#small_font = f
+		#print (small_font)
+		f = font.nametofont('TkFixedFont')
+		f.configure(size=9)
+
 		self.status.pack(side=TOP, fill=X)
 		scrollbar = Scrollbar(listbframe)
 		scrollbar.pack(side=RIGHT, fill=Y)
 		self.listb = Listbox(listbframe, width=60,
-				yscrollcommand=scrollbar.set)
+				yscrollcommand=scrollbar.set, font=f)
 		self.listb.bind('<Double-1>', self.double_click)
 		self.listb.pack(fill=BOTH, expand=True)
 		scrollbar.config(command=self.listb.yview)
