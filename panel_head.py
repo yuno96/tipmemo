@@ -73,7 +73,7 @@ class PanelHead(Frame):
 	def load_db(self, filelist=None):
 		kl = {}
 		dbpath = self.mainobj.get_db_path()
-		if not os.path.exists(dbpath):
+		if not os.path.exists(self.mainobj.DBPATH):
 			self.logging.debug('no file' + dbpath)
 			return None
 		self.logging.info(dbpath)
